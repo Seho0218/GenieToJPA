@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.genie.myapp.dao.AdminDAO">
+	<!-- 카테고리 -->
+	<select id="adminCategoryTag" resultType="AdminDTO">
+		select category_id, product_category from category
+	</select>
+	<!-- 태그 -->
+	<select id="adminTag" resultType="AdminDTO">
+		select product_tag_id, product_tag from tag
+	</select>
+
+	<!-- 태그 셀렉트 All -->
+	<select resultType="AdminDTO" id="tagAllSelect">
+		select product_tag_id, product_tag from tag order by product_tag_id asc
+	</select>
+	<select resultType="AdminDTO" id="getadminTag" parameterType="String">
+		select product_tag_id, product_tag from tag where product_tag_id='${param1}'
+	</select>
+	<update id="adminTagPopEdit" parameterType="AdminDTO">
+		update tag set product_tag_id=#{productTagId}, product_tag=#{productTag}
+		where product_tag_id=#{productTagId}
+	</update>
+	<delete id="adminTagDel">
+		delete from tag where product_tag_id='${param1}'
+	</delete>
+	<!-- 태그 셀렉트 All 끝 -->
+
+	<!-- 카테고리 셀렉트 All 시작 -->
+	<select resultType="AdminDTO" id="categoryAllSelect">
+		select category_id, product_category from category
+	</select>
+	<select resultType="AdminDTO" id="getadcategory" parameterType="String">
+		select category_id, product_category from category where category_id='${param1}'
+	</select>
+	<update id="adcategoryPopEdit" parameterType="AdminDTO">
+		update category set category_id=#{categoryId}, product_category=#{productCategory}
+		where category_id=#{categoryId}
+	</update>
+	<delete id="adcategoryDel">
+		delete from category where category_id='${param1}'
+	</delete>
+	<!-- 카테고리 셀렉트 All 끝 -->
+
+	<!-- ============================================ -->
+
+
+	<select resultType="UserDTO" id="userAllSelect">
+		select genie_id, user_name, user_tel, user_email, user_gender, 
+		date_format(sign_in_date, '%y-%m-%d') sign_in_date, payment_method from user 
+		<if test="searchWord!=null">
+			where ${searchKey} like '%${searchWord}%' 
+		</if> 
+		order by sign_in_date desc limit ${onePageRecord} offset ${offsetPoint} 
+	</select>
+
+	<select resultType="UserDTO" id="getadmember" parameterType="String">
+		select genie_id, user_name, user_tel, user_email,user_gender, date_format(sign_in_date, '%y-%m-%d') sign_in_date, 
+		payment_method from user where genie_id='${param1}'
+	</select>
+	
+	<update id="admemberPopEdit" parameterType="UserDTO">
+		update user set genie_id=#{genieId}, user_name=#{userName}, user_tel=#{userTel}, user_email=#{userEmail},
+		sign_in_date=#{signInDate}, payment_method=#{paymentMethod}
+		where genie_id=#{genieId}
+	</update>
+	
+	<delete id="admemberDel">
+		delete from user where genie_id='${param1}'
+	</delete>
+	
+	<select resultType="int" id="userTotalRecord">
+		select count(genie_id) cnt from user 
+	<if test="searchWord!=null">
+		where ${searchKey} like '%${searchWord}%'
+	</if>
+	</select>
+	
+	<!-- ============================================== -->
+	
+	<select resultType="SellerDTO" id="sellerAllSelect">
+		select genie_id, seller_tel, seller_email, seller_reg_no, company_name, ceo_name, seller_address, seller_website, 
+		date_format(write_date, '%y-%m-%d') write_date, seller_status, approval_date from seller
+		<if test="searchWord!=null">
+			where ${searchKey} like '%${searchWord}%' 
+		</if> 
+		order by write_date desc limit ${onePageRecord} offset ${offsetPoint} 
+	</select>
+
+	<select resultType="SellerDTO" id="getadcompany" parameterType="String">
+		select genie_id, seller_tel, seller_email, seller_reg_no, company_name, ceo_name, seller_address, seller_website, 
+		date_format(write_date, '%y-%m-%d') write_date, seller_status, approval_date from seller where genie_id='${param1}'
+	</select>
+	
+	<update id="adcompanyPopEdit" parameterType="SellerDTO">
+		update seller set genie_id=#{genieId}, seller_tel=#{sellerTel}, seller_email=#{sellerEmail}, seller_reg_no=#{sellerRegNo}, company_name=#{companyName},
+		ceo_name=#{ceoName}, seller_address=#{sellerAddress}, seller_website=#{sellerWebsite}, write_date=#{writeDate}, seller_status=#{sellerStatus}, approval_date=#{approvalDate}
+		where genie_id=#{genieId}
+	</update>
+	
+	<delete id="adcompanyDel">
+		delete from seller where genie_id='${param1}'
+	</delete>
+	
+	<select resultType="int" id="sellerTotalRecord">
+		select count(genie_id) cnt from seller 
+	<if test="searchWord!=null">
+		where ${searchKey} like '%${searchWord}%'
+	</if>
+	</select>
+	
+	<select resultType="int" id="sellerApproval">
+		select count(genie_id) cnt from seller where seller_status="N"
+	</select>
+	
+	<insert id="paymentWrite">
+		insert into cart(cart_num, genie_id, product_id, cart_price, cart_qty, cart_write_date) 
+		values(#{cartNum}, #{genieId}, #{productId}, #{cartPrice}, ${cartQty}, #{cartWriteDate})
+	</insert>
+
+	<!-- Test 페이지 -->
+	<select resultType="int" id="mainTotalRecord">
+		select count(genie_id) cnt from seller 
+	<if test="searchWord!=null">
+		where ${searchKey} like '%${searchWord}%'
+	</if>
+	</select>
+
+</mapper>

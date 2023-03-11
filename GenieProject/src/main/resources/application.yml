@@ -1,0 +1,57 @@
+server:
+  port: 9070
+
+spring:
+  sql:
+    init:
+      mode: always
+  datasource: # jdbc
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1/genie?characterEncoding=utf-8
+    username: root
+    password: root1234
+
+
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true
+    defer-datasource-initialization: true
+
+  mvc:
+    view:
+      prefix: /WEB-INF/views/
+      suffix: .jsp
+
+  servlet: #fileupload
+    multipart:
+      max-file-size: 20MB
+      enabled: true
+
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ghdtpgh8913@gmail.com
+    password:
+    properties:
+      mail:
+        smtp:
+          starttls.enable: true
+          auth: true
+
+
+mybatis:
+  type-aliases-package: com.genie.myapp.dto
+  mapper-locations: mapper/*Mapper.xml
+  configuration:
+    map-underscore-to-camel-case: true
+
+logging.level:
+  root: info
+  org.hibernate.SQL: debug
+
+
+

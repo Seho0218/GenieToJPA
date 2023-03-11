@@ -1,0 +1,103 @@
+buildscript {
+	ext {
+		queryDslVersion = "5.0.0"
+	}
+}
+
+plugins {
+	id 'org.springframework.boot' version '2.7.6'
+	id 'io.spring.dependency-management' version '1.0.13.RELEASE'
+	id "com.ewerk.gradle.plugins.querydsl" version "1.0.10"
+	id 'java'
+	id 'war'
+}
+
+group = 'com.genie'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '17'
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation 'org.springframework.data:spring-data-jpa'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
+	implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:2.2.2'
+	implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.8.1'
+	implementation 'org.modelmapper:modelmapper:3.1.1'
+
+	implementation "com.querydsl:querydsl-jpa:${queryDslVersion}"
+	implementation "com.querydsl:querydsl-apt:${queryDslVersion}"
+
+
+	compileOnly 'org.projectlombok:lombok'
+	//developmentOnly 'org.springframework.boot:spring-boot-devtools'
+
+	runtimeOnly 'mysql:mysql-connector-java'
+
+	//jwt 적용
+	implementation group: 'io.jsonwebtoken', name: 'jjwt-api', version: '0.11.5'
+	runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-impl', version: '0.11.5'
+	runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-jackson', version: '0.11.5'
+
+	annotationProcessor 'org.projectlombok:lombok'
+	providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
+
+	//providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
+
+	//테스트 케이스
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testCompileOnly 'org.projectlombok:lombok:1.18.20'
+	testAnnotationProcessor'org.projectlombok:lombok:1.18.20'
+
+	//뷰를 jsp로 사용하기 위해서 프레임워크를 추가한다.
+	implementation 'org.apache.tomcat.embed:tomcat-embed-jasper:9.0.58'
+	implementation 'javax.servlet:jstl:1.2'
+	implementation group: 'javax.inject', name: 'javax.inject', version: '1'
+	implementation 'commons-fileupload:commons-fileupload:1.4'
+	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-mail', version: '2.7.3'
+	implementation 'com.google.code.gson:gson:2.8.9'
+
+	implementation 'org.springframework.boot:spring-boot-starter-security:2.7.4'
+	implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity5'
+	implementation 'com.github.iamport:iamport-rest-client-java:0.2.22'
+
+}
+
+test {
+	useJUnitPlatform()
+}
+
+
+//querydsl 추가 시작
+def querydslDir = "$buildDir/generated/querydsl"
+querydsl {
+	jpa = true
+	querydslSourcesDir = querydslDir
+}
+sourceSets {
+	main.java.srcDir querydslDir
+}
+configurations {
+	querydsl.extendsFrom compileClasspath
+}
+compileQuerydsl {
+	options.annotationProcessorPath = configurations.querydsl
+}
+//querydsl 추가 끝
+
+allprojects {
+		repositories {
+
+			maven { url 'https://jitpack.io' }
+		}
+	}

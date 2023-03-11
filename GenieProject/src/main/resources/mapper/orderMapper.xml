@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.genie.myapp.dao.OrderDAO">
+
+<!-- 구매정보 이동 -->
+
+<!-- 장바구니 정보 가져오기 -->
+    <select id="readyToPay" resultType="CartDTO">
+
+        select * 
+        from cart c 
+        join product p 
+        on c.product_id=p.product_id 
+        where c.cart_num in
+
+	  	<foreach collection="cartList" index="index" item ="item" open="(" separator="," close=")">
+	  		${item}
+	  	</foreach>	 
+
+    </select>
+
+    <select id="getFromCart" resultType="OrderDTO">
+
+        select * 
+        from cart c 
+        join product p 
+        on c.product_id=p.product_id 
+        where c.cart_num in
+
+	  	<foreach collection="cartList" index="index" item ="item" open="(" separator="," close=")">
+	  		${item}
+	  	</foreach>	
+    
+    </select>
+
+    <!-- 주문 완료 페이지 -->
+
+    <select id="getOrderList" resultType="OrderDTO">
+
+        select * from myorder where order_num = (
+            select order_num from myorder where order_write_date = (
+                    (select max(order_write_date) from myorder where genie_id=#{genieId})));
+
+    </select>
+
+</mapper>

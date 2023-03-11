@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.genie.myapp.dao.ReplyProductDAO">
+
+	<select id="replyProductList" resultType="ReplyProductDTO">
+		select genie_id, reply_no, product_id, comment, rating, write_date
+		from reply_product
+		where product_id=${param1}
+		order by reply_no desc
+	</select>
+	
+	<insert id="replyProductWrite">
+		insert into reply_product(genie_id, product_id, comment, rating) 
+		values(#{genieId}, #{productId}, #{comment}, #{rating})
+	</insert>
+
+
+	<insert id="likeInsert">
+		insert into product_like (genie_id, product_id, like_num)
+		values(#{genieId}, #{productId}, '1')
+	</insert>
+
+	<select id="likeStatus" resultType="int">
+		select count(genie_id) from product_like where genie_id = #{genieId} and product_id = #{productId}
+	</select>
+	
+</mapper>
