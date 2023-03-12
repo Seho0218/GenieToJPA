@@ -1,4 +1,6 @@
 # GenieProject(JPA+QueryDSL)
+## 기존 루트에서 변경
+- 기존 루트 : https://github.com/Seho0218/Self_Study/tree/master/project/GenieProject(jpa)
 
 ### 1. 프로젝트 목적과 계획
 
