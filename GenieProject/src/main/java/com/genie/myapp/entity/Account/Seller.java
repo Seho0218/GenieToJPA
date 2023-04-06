@@ -9,7 +9,8 @@ import org.hibernate.annotations.DynamicUpdate;
 import javax.persistence.*;
 
 import java.time.LocalDateTime;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 
 @Entity
@@ -19,7 +20,7 @@ import java.util.List;
 public class Seller extends Account{
 
     @OneToMany(mappedBy = "genieId")
-    private List<Product> productList;
+    private Set<Product> productList = new HashSet<>();
 
     private String sellerTel;
     private String sellerEmail;

@@ -5,8 +5,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 import static javax.persistence.CascadeType.ALL;
 import static javax.persistence.GenerationType.*;
@@ -19,7 +18,7 @@ public class Category {
     private long categoryId;
 
     @OneToMany(mappedBy = "categoryConnectId", cascade = ALL)
-    private List<CategoryConnect> connectList = new ArrayList<>();
+    private Set<CategoryConnect> connectList = new HashSet<>();
 
     private String productCategory;
     private String productCategoryEng;
