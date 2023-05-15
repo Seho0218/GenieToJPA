@@ -31,7 +31,7 @@ public class ProductController {
 	Map<String, Object> map = null;
 
 	@GetMapping("/")
-	public ModelAndView index(AdminDTO adminDTO, ProductDTO productDTO, PagingDTO pDTO) {
+	public ModelAndView index(AdminDTO adminDTO, ProductDTO productDTO) {
 
 		mav = new ModelAndView();
 		mav.addObject("tlist", adminService.adminTag(adminDTO));
